@@ -163,11 +163,3 @@ function Show-ParlObjectUsingANSIColor
         Write-Verbose "[END    ] Ending: $($MyInvocation.Mycommand)"
     }
 }
-
-$testObject = [PSCustomObject]@{
-    Name = 'TestObject'
-    Value = $null
-    Count = 43
-    Status = ''
-}
-$testObject | Show-ParlObjectUsingANSIColor
