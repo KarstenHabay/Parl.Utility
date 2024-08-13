@@ -14,14 +14,14 @@ Describe 'Show-ParlObjectUsingANSIColor' {
     BeforeAll {
         # Arrange
         # Mock the Write-Host to intercept and check the output
-        Mock Write-Host {throw "Don't call Write-Host for real"}
+        Mock Write-Host {throw "Don't call Write-Host for real"} -ModuleName $script:dscModuleName
 
         # Test object with various properties
     }
 
     It 'Should display property names in green when they have values' {
         # Arrange
-        Mock Write-Host { }
+        Mock Write-Host { } -ModuleName $script:dscModuleName
         $testObject = [PSCustomObject]@{
             Name = 'TestObject'
             Value = $null
@@ -33,9 +33,9 @@ Describe 'Show-ParlObjectUsingANSIColor' {
         Show-ParlObjectUsingANSIColor -Object $testObject -ModifyEmptyParameterName @('Value', 'Status')
         # Assert
         Write-Output "Starting Assert"
-        Should -Invoke Write-Host -Times 4 -Exactly
-        Should -Invoke Write-Host -ParameterFilter {$Object -eq "`e[92;1mName   :`e[0m `e[37mTestObject`e[0m"}
-        Should -Invoke Write-Host -ParameterFilter {$Object -eq "`e[92;1mCount  :`e[0m `e[37m42`e[0m"}
+        Should -Invoke Write-Host -Times 4 -Exactly -ModuleName $script:dscModuleName
+        Should -Invoke Write-Host -ParameterFilter {$Object[0] -eq "`e[92;1mName   :`e[0m `e[37mTestObject`e[0m"} -ModuleName $script:dscModuleName
+        Should -Invoke Write-Host -ParameterFilter {$Object[0] -eq "`e[92;1mCount  :`e[0m `e[37m43`e[0m"} -ModuleName $script:dscModuleName
     }
 
     # It 'Should display property names in red when they are empty or null' {
